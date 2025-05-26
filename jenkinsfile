@@ -3,7 +3,7 @@ pipeline {
 
   environment {
     SONARQUBE = 'sonarmatheus-gs' // nome configurado no Jenkins
-    // AZURE_APP_NAME = 'sua-app-no-azure'
+    AZURE_APP_NAME = 'sonarmatheus-gs'
     RESOURCE_GROUP = 'GS_olivia'
   }
 
