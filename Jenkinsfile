@@ -10,7 +10,7 @@ pipeline {
   stages {
     stage('Checkout') {
       steps {
-        git 'https://github.com/MatheusHenriqueCosta/GS-Olivia-matheusg.git'
+        git branch: 'main', url: 'https://github.com/MatheusHenriqueCosta/GS-Olivia-matheusg.git'
       }
     }
 
