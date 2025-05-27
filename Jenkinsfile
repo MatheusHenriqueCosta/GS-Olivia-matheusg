@@ -2,9 +2,15 @@ pipeline {
     agent any
     
     environment {
-        AZURE_CREDS = credentials('azure-service-principal')
-        SONAR_TOKEN = credentials('sonarqube-token')
-        DOCKER_IMAGE = "youracr.azurecr.io/python-app:${BUILD_NUMBER}"
+        // Variáveis do Azure (pode ser do SonarQube ou Jenkins)
+        AZURE_CLIENT_ID = credentials('azure-client-id')
+        AZURE_CLIENT_SECRET = credentials('azure-client-secret')
+        AZURE_TENANT_ID = credentials('azure-tenant-id')
+        
+        // Configurações do App Service
+        APP_NAME = "sonarmatheus-gs"
+        RESOURCE_GROUP = "GS_olivia"
+        PYTHON_VERSION = "3.9"
         VENV_DIR = "${WORKSPACE}/venv"
     }
 
@@ -30,7 +36,7 @@ pipeline {
                 sh """
                 . ${VENV_DIR}/bin/activate
                 pip install -r requirements.txt
-                pip install pytest pytest-cov sonarqube
+                pip install pytest pytest-cov
                 """
             }
         }
@@ -55,7 +61,7 @@ pipeline {
                     sh """
                     . ${VENV_DIR}/bin/activate
                     sonar-scanner \
-                      -Dsonar.projectKey=sonarmatheus-gs \
+                      -Dsonar.projectKey=python-app \
                       -Dsonar.sources=. \
                       -Dsonar.host.url=\${SONAR_HOST_URL} \
                       -Dsonar.login=\${SONAR_TOKEN} \
@@ -73,54 +79,56 @@ pipeline {
             }
         }
         
-        stage('Build Docker Image') {
-            when {
-                branch 'main'
-            }
-            steps {
-                script {
-                    docker.build(DOCKER_IMAGE)
-                }
-            }
-        }
-        
-        stage('Push to ACR') {
-            when {
-                branch 'main'
-            }
-            steps {
-                script {
-                    docker.withRegistry('https://youracr.azurecr.io', 'azure-acr-creds') {
-                        docker.image(DOCKER_IMAGE).push()
-                    }
-                }
-            }
-        }
-        
         stage('Deploy to Azure App Service') {
             when {
                 branch 'main'
             }
             steps {
-                azureWebAppPublish(
-                    azureCredentialsId: '56a06913-bcca-45f8-aa78-6aa52e0c312c',
-                    resourceGroup: 'GS_olivia',
-                    appName: 'sonarmatheus-gs',
-                    slotName: 'production',
-                    publishType: 'docker',
-                    dockerImageName: DOCKER_IMAGE
-                )
+                script {
+                    // 1. Fazer login no Azure
+                    sh """
+                    az login --service-principal \
+                      -u ${AZURE_CLIENT_ID} \
+                      -p ${AZURE_CLIENT_SECRET} \
+                      --tenant ${AZURE_TENANT_ID}
+                    """
+                    
+                    // 2. Configurar o ambiente do App Service
+                    sh """
+                    az webapp config appsettings set \
+                      --name ${APP_NAME} \
+                      --resource-group ${RESOURCE_GROUP} \
+                      --settings \
+                        WEBSITE_RUN_FROM_PACKAGE=1 \
+                        PYTHON_VERSION=${PYTHON_VERSION}
+                    """
+                    
+                    // 3. Criar o pacote de deploy
+                    sh """
+                    . ${VENV_DIR}/bin/activate
+                    pip freeze > requirements.txt
+                    zip -r deploy.zip . -x '*.git*' -x '*tests*' -x '*venv*'
+                    """
+                    
+                    // 4. Fazer deploy via ZIP
+                    sh """
+                    az webapp deployment source config-zip \
+                      --name ${APP_NAME} \
+                      --resource-group ${RESOURCE_GROUP} \
+                      --src deploy.zip
+                    """
+                }
             }
         }
     }
     
     post {
         always {
-            emailext body: 'Build ${BUILD_NUMBER} completed with status ${currentBuild.currentResult}. See details: ${BUILD_URL}',
+            emailext body: 'Build ${BUILD_NUMBER} completed with status ${currentBuild.currentResult}. App URL: https://${APP_NAME}.azurewebsites.net',
                 subject: 'Build Notification',
                 to: 'rm96957@fiap.com.br'
             slackSend channel: '#devops',
-                     message: "Build ${currentBuild.currentResult}: ${env.JOB_NAME} #${env.BUILD_NUMBER}\n${env.BUILD_URL}"
+                     message: "Deploy concluído: https://${APP_NAME}.azurewebsites.net"
         }
     }
 }
