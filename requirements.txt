@@ -3,4 +3,3 @@ gunicorn
 pytest
 pytest-cov
 python-dotenv
-sonarqube
