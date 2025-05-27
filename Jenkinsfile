@@ -34,7 +34,7 @@ pipeline {
         AZURE_CREDENTIALS_ID = "azure-sp"
         AZURE_TENANT_ID = "11dbbfe2-89b8-4549-be10-cec364e59551"
         SONARQUBE_SERVER = "SonarGS"  // Nome da configuração do servidor no Jenkins
-        SONAR_PROJECT_KEY = "meu-app-python"
+        SONAR_PROJECT_KEY = "SonarGS"
         COVERAGE_REPORT_PATH = "coverage.xml"
     }
 
