@@ -12,7 +12,7 @@ pipeline {
         stage('Análise com SonarQube') {
             steps {
                 withSonarQubeEnv("${SONARQUBE}") {
-                    sh 'sonar-scanner'
+                    sh '/opt/sonar-scanner/bin/sonar-scanner'
                 }
             }
         }
