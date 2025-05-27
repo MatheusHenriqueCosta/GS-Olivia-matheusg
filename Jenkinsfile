@@ -61,7 +61,7 @@ pipeline {
         stage('SonarQube') {
             steps {
                 withSonarQubeEnv('SonarGS') {
-                    sh ''''
+                    sh '''
                         . venv/bin/activate
                         /opt/sonar-scanner/bin/sonar-scanner \
                           -Dsonar.projectKey=meu-app-python \
