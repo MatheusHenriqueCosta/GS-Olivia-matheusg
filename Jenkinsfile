@@ -55,10 +55,7 @@ pipeline {
 
         stage('Testes e cobertura') {
             steps {
-                sh '''
-                export PATH=$HOME/.local/bin:$PATH
-                pytest --cov=app --cov-report=xml
-                '''
+                sh '~/.local/bin/pytest --cov=app --cov-report=xml'
             }
         }
 
