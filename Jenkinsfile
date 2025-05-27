@@ -36,13 +36,7 @@ pipeline {
     }
 
     stages {
-        stage('Instalar dependências') {
-            steps {
-                sh 'pip install -r requirements.txt'
-            }
-        }
-
-        stage('Setup Python VirtualEnv') {
+        stage('Preparar ambiente Python') {
             steps {
             sh '''
                 python3 -m venv venv
@@ -56,14 +50,25 @@ pipeline {
 
         stage('Testes e cobertura') {
             steps {
-                sh '~/.local/bin/pytest --cov=app --cov-report=xml'
+                sh '''
+                    . venv/bin/activate
+                    pytest --cov=app --cov-report=xml
+                '''
             }
         }
 
         stage('SonarQube') {
             steps {
                 withSonarQubeEnv('SonarAzure') {
-                    sh '/opt/sonar-scanner/bin/sonar-scanner'
+                    sh ''''
+                        . venv/bin/activate
+                        /opt/sonar-scanner/bin/sonar-scanner \
+                          -Dsonar.projectKey=meu-app-python \
+                          -Dsonar.sources=. \
+                          -Dsonar.host.url=$SONAR_HOST_URL \
+                          -Dsonar.login=$SONAR_AUTH_TOKEN \
+                          -Dsonar.python.coverage.reportPaths=coverage.xml
+                    '''
                 }
             }
         }
