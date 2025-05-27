@@ -39,10 +39,6 @@ Pipeline automatizado que realiza:
 
 ### 2. Variáveis de Ambiente
 Configure no Jenkins:
-```bash
-AZURE_APP_NAME="meu-app-python"
-AZURE_RG="GS_olivia"
-AZURE_TENANT_ID="11dbbfe2-89b8-4549-be10-cec364e59551"
 
 ### 🔄 Fluxo do Pipeline
 Build:
