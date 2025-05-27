@@ -43,11 +43,5 @@ pipeline {
       }
     }
   }
-    stage('Análise SonarQube') {
-  steps {
-    withSonarQubeEnv('SonarQube') {
-      sh 'mvn sonar:sonar'
-    }
-  }
 }
 }
