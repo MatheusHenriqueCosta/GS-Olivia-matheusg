@@ -33,6 +33,9 @@ pipeline {
         AZURE_RG = "GS_olivia"
         AZURE_CREDENTIALS_ID = "azure-sp"
         AZURE_TENANT_ID = "11dbbfe2-89b8-4549-be10-cec364e59551"
+        SONARQUBE_SERVER = "SonarGS"  // Nome da configuração do servidor no Jenkins
+        SONAR_PROJECT_KEY = "meu-app-python"
+        COVERAGE_REPORT_PATH = "coverage.xml"
     }
 
     stages {
@@ -60,14 +63,15 @@ pipeline {
 
         stage('SonarQube') {
             steps {
-                withSonarQubeEnv('SonarGS') {
+                withSonarQubeEnv("${SONARQUBE_SERVER}") {
+                    // Executa o SonarQube Scanner
                     sh '''
                         . venv/bin/activate
                         /opt/sonar-scanner/bin/sonar-scanner \
                           -Dsonar.projectKey=meu-app-python \
                           -Dsonar.sources=. \
-                          -Dsonar.host.url=$SONAR_HOST_URL \
-                          -Dsonar.login=$SONAR_AUTH_TOKEN \
+                          -Dsonar.host.url=${SONAR_HOST_URL} \
+                          -Dsonar.login=${SONAR_AUTH_TOKEN} \
                           -Dsonar.python.coverage.reportPaths=coverage.xml
                     '''
                 }
