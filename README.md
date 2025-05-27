@@ -44,7 +44,7 @@ AZURE_APP_NAME="meu-app-python"
 AZURE_RG="GS_olivia"
 AZURE_TENANT_ID="11dbbfe2-89b8-4549-be10-cec364e59551"
 
-## 🔄 Fluxo do Pipeline
+### 🔄 Fluxo do Pipeline
 Build:
   Cria ambiente virtual Python
   Instala dependências (requirements.txt)
@@ -64,7 +64,7 @@ Deploy:
 Monitoramento:
   Configura alertas básicos (CPU, HTTP 500)
 
-## 🚧 Melhorias Futuras
+### 🚧 Melhorias Futuras
 
 Implementar canary deployment
 Adicionar testes de integração
