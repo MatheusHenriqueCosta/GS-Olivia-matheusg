@@ -56,7 +56,7 @@ pipeline {
                 sh '''
                     . venv/bin/activate
                     export PYTHONPATH=$(pwd)
-                    pytest --cov=app --cov-report=xml
+                    pytest tests/ -v --cov=app --cov-report=xml
                 '''
             }
         }
@@ -83,9 +83,9 @@ pipeline {
 
         stage('Login no Azure') {
             steps {
-                withCredentials([usernamePassword(credentialsId: "${AZURE_CREDENTIALS_ID}", usernameVariable: 'AZURE_APP_ID', passwordVariable: 'AZURE_PASSWORD')]) {
+                withCredentials([usernamePassword(credentialsId: "${AZURE_CREDENTIALS_ID}", usernameVariable: 'AZURE_CLIENT_ID', passwordVariable: 'AZURE_CLIENT_SECRET')]) {
                     sh '''
-                        az login --service-principal -u $AZURE_APP_ID -p $AZURE_PASSWORD --tenant 11dbbfe2-89b8-4549-be10-cec364e59551
+                        az login --service-principal -u $AZURE_CLIENT_ID -p $AZURE_CLIENT_SECRET --tenant "${AZURE_TENANT_ID}""
                     '''
                 }
             }
