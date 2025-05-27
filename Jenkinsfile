@@ -60,7 +60,7 @@ pipeline {
 
         stage('SonarQube') {
             steps {
-                withSonarQubeEnv('SonarAzure') {
+                withSonarQubeEnv('SonarGS') {
                     sh ''''
                         . venv/bin/activate
                         /opt/sonar-scanner/bin/sonar-scanner \
