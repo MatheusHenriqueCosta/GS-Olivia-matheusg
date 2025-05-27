@@ -52,6 +52,7 @@ pipeline {
             steps {
                 sh '''
                     . venv/bin/activate
+                    export PYTHONPATH=$(pwd)
                     pytest --cov=app --cov-report=xml
                 '''
             }
