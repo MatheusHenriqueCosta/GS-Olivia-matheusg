@@ -1,24 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0"
          xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    
+
+    <!-- Informações básicas do projeto -->
     <groupId>com.suaempresa</groupId>
     <artifactId>seu-projeto</artifactId>
     <version>1.0-SNAPSHOT</version>
-    
+
     <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
+        <!-- Versão explícita do plugin problemático -->
+        <icancer-movm.version>2.16.3</icancer-movm.version>
     </properties>
-    
+
+    <!-- Repositórios -->
+    <repositories>
+        <repository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </repository>
+        <!-- Adicione aqui outros repositórios necessários -->
+    </repositories>
+
+    <build>
+        <plugins>
+            <!-- Plugin com versão explícita -->
+            <plugin>
+                <groupId>org.comerource</groupId>
+                <artifactId>icancer-movm</artifactId>
+                <version>${icancer-movm.version}</version>
+                <configuration>
+                    <!-- Configurações específicas do plugin -->
+                    <serverUrl>https://url-correta-do-seu-servidor</serverUrl>
+                </configuration>
+            </plugin>
+
+            <!-- Compilador Java -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+            </plugin>
+        </plugins>
+    </build>
+
     <dependencies>
-        <!-- Adicione dependências aqui -->
+        <!-- Dependências do projeto -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.12</version>
+            <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
+        
+        <!-- Adicione outras dependências necessárias -->
     </dependencies>
 </project>
