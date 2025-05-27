@@ -4,7 +4,6 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <!-- Informações básicas do projeto -->
     <groupId>com.suaempresa</groupId>
     <artifactId>seu-projeto</artifactId>
     <version>1.0-SNAPSHOT</version>
@@ -13,33 +12,55 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <!-- Versão explícita do plugin problemático -->
-        <icancer-movm.version>2.16.3</icancer-movm.version>
+        
+        <!-- Verifique o nome e versão exatos do plugin com sua equipe -->
+        <ignore-movs.version>1.16.3</ignore-movs.version>
     </properties>
 
-    <!-- Repositórios -->
+    <!-- Repositórios - CORRIGIDOS -->
     <repositories>
         <repository>
             <id>central</id>
             <url>https://repo.maven.apache.org/maven2</url>
         </repository>
-        <!-- Adicione aqui outros repositórios necessários -->
+        
+        <!-- Se for um plugin interno, adicione o repositório correto -->
+        <repository>
+            <id>seu-repositorio-interno</id>
+            <url>https://url-correta-do-repositorio-interno</url>
+        </repository>
     </repositories>
+
+    <pluginRepositories>
+        <pluginRepository>
+            <id>central</id>
+            <url>https://repo.maven.apache.org/maven2</url>
+        </pluginRepository>
+        
+        <!-- Repositório de plugins específico se necessário -->
+        <pluginRepository>
+            <id>seu-plugin-repo</id>
+            <url>https://url-correta-para-plugins</url>
+        </pluginRepository>
+    </pluginRepositories>
 
     <build>
         <plugins>
-            <!-- Plugin com versão explícita -->
+            <!-- Plugin com configuração explícita -->
             <plugin>
-                <groupId>org.comerource</groupId>
-                <artifactId>icancer-movm</artifactId>
-                <version>${icancer-movm.version}</version>
-                <configuration>
-                    <!-- Configurações específicas do plugin -->
-                    <serverUrl>https://url-correta-do-seu-servidor</serverUrl>
-                </configuration>
+                <groupId>org.connection</groupId>
+                <artifactId>ignore-movs</artifactId>
+                <version>${ignore-movs.version}</version>
+                
+                <!-- Se necessário, desative temporariamente -->
+                <executions>
+                    <execution>
+                        <id>default-convert</id>
+                        <phase>none</phase> <!-- Desativa este goal -->
+                    </execution>
+                </executions>
             </plugin>
 
-            <!-- Compilador Java -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -49,14 +70,11 @@
     </build>
 
     <dependencies>
-        <!-- Dependências do projeto -->
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
             <version>4.13.2</version>
             <scope>test</scope>
         </dependency>
-        
-        <!-- Adicione outras dependências necessárias -->
     </dependencies>
 </project>
