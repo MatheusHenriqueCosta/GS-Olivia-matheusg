@@ -69,10 +69,13 @@ pipeline {
                         . venv/bin/activate
                         /opt/sonar-scanner/bin/sonar-scanner \
                           -Dsonar.projectKey=meu-app-python \
-                          -Dsonar.sources=. \
+                          -Dsonar.projectKey=${SONAR_PROJECT_KEY} \
+                          -Dsonar.sources=app \
                           -Dsonar.host.url=${SONAR_HOST_URL} \
                           -Dsonar.login=${SONAR_AUTH_TOKEN} \
-                          -Dsonar.python.coverage.reportPaths=coverage.xml
+                          -Dsonar.python.coverage.reportPaths=${COVERAGE_REPORT_PATH} \
+                            -Dsonar.python.version=3 \
+                            -Dsonar.verbose=true \
                     '''
                 }
             }
