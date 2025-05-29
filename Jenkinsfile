@@ -1,30 +1,3 @@
-// Descrição: Pipeline para rodar testes com cobertura e análise de código com SonarQube
-// pipeline {
-//     agent any
-//     environment {
-//         SONARQUBE = 'SonarGS' // Nome configurado no Jenkins
-
-//     }
-//     stages {
-//         stage('Instalar dependências') {
-//             steps {
-//                 sh 'pip install -r requirements.txt'
-//             }
-//         }
-//         stage('Rodar testes com cobertura') {
-//             steps {
-//                 sh 'pytest --cov=app --cov-report=xml'
-//             }
-//         }
-//         stage('Análise com SonarQube') {
-//             steps {
-//                 withSonarQubeEnv("${SONARQUBE}") {
-//                     sh '/opt/sonar-scanner/bin/sonar-scanner'
-//                 }
-//             }
-//         }
-//     }
-// }
 pipeline {
     agent any
 
