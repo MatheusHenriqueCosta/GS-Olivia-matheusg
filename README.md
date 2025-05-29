@@ -62,7 +62,7 @@ Monitoramento:
 
 ### 🚧 Melhorias Futuras
 
-Implementar canary deployment
-Adicionar testes de integração
-Dashboard detalhado no Azure Monitor
-Notificações no Slack
+  Implementar canary deployment
+  Adicionar testes de integração
+  Dashboard detalhado no Azure Monitor
+  Notificações no Slack
